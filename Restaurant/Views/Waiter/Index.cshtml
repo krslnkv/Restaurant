@@ -1,0 +1,23 @@
+﻿@using Microsoft.AspNet.Identity
+@{
+    ViewBag.Title = "Панель официанта";
+    if (ViewBag.ManagerNotFound == true)
+    {
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <strong>Невозможно начать смену</strong> Обратитесь к менеджеру и узнайте, начал ли он свою смену
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        ViewBag.ManagerNotFound = false;
+    }
+    <h3>Панель официанта @ViewBag.Waiter.User.Name</h3>
+    if (ViewBag.Waiter.IsWorkingNow == false)
+    {
+        @Html.ActionLink("Начать смену", "StartWaiterShift", "Waiter", htmlAttributes: new { @class = "btn btn-primary" }, routeValues: new { id = ViewBag.Waiter.Id });
+    }
+    if (ViewBag.Waiter.IsWorkingNow == true)
+    {
+        @Html.ActionLink("Закончить смену", "StopWaiterShift", "Waiter", htmlAttributes: new { @class = "btn btn-danger" }, routeValues: new { id = ViewBag.Waiter.Id });
+    }
+}
