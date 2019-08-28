@@ -1,0 +1,13 @@
+﻿@using Microsoft.AspNet.Identity
+@{
+    ViewBag.Title = "Панель менеджера";
+    <h3>Панель менеджера @ViewBag.Manager.User.Name</h3>
+    if (ViewBag.Manager.IsWorkingNow == false)
+    {
+        @Html.ActionLink("Начать смену", "StartManagerShift", "Manager", htmlAttributes: new { @class = "btn btn-primary" }, routeValues: new { id = ViewBag.Manager.Id});
+    }
+    if (ViewBag.Manager.IsWorkingNow == true)
+    {
+        @Html.ActionLink("Закончить смену", "StopManagerShift", "Manager", htmlAttributes: new { @class = "btn btn-danger" }, routeValues: new { id = ViewBag.Manager.Id});
+    }
+}
