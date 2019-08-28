@@ -21,5 +21,12 @@ namespace Restaurant.Dal
             return new ApplicationDbContext();
         }
         public DbSet<Dish> Dishes { get; set; }
+        public DbSet<Guest> Guests { get; set; }
+        public DbSet<Manager> Managers { get; set; }
+        public DbSet<Waiter> Waiters { get; set; }
+        public DbSet<Shift> Shifts { get; set; }
+        public DbSet<Table> Tables { get; set; }
+        public DbSet<Order> Orders { get; set; }
+        public DbSet<OrderDetail> OrderDetails { get; set; }
     }
 }

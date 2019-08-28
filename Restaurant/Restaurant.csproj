@@ -195,11 +195,50 @@
     <Compile Include="Migrations\201908272342317_FixDish.NameColumn.Designer.cs">
       <DependentUpon>201908272342317_FixDish.NameColumn.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201908281218506_AddDescriptionToDishesTable.cs" />
+    <Compile Include="Migrations\201908281218506_AddDescriptionToDishesTable.Designer.cs">
+      <DependentUpon>201908281218506_AddDescriptionToDishesTable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201908281302386_AddGuestsTable.cs" />
+    <Compile Include="Migrations\201908281302386_AddGuestsTable.Designer.cs">
+      <DependentUpon>201908281302386_AddGuestsTable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201908281307339_AddManagersTable.cs" />
+    <Compile Include="Migrations\201908281307339_AddManagersTable.Designer.cs">
+      <DependentUpon>201908281307339_AddManagersTable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201908281312506_AddWaitersTable.cs" />
+    <Compile Include="Migrations\201908281312506_AddWaitersTable.Designer.cs">
+      <DependentUpon>201908281312506_AddWaitersTable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201908281323127_AddShiftsTable.cs" />
+    <Compile Include="Migrations\201908281323127_AddShiftsTable.Designer.cs">
+      <DependentUpon>201908281323127_AddShiftsTable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201908281332193_AddTablesTable.cs" />
+    <Compile Include="Migrations\201908281332193_AddTablesTable.Designer.cs">
+      <DependentUpon>201908281332193_AddTablesTable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201908281338175_AddOrdersTable.cs" />
+    <Compile Include="Migrations\201908281338175_AddOrdersTable.Designer.cs">
+      <DependentUpon>201908281338175_AddOrdersTable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201908281344319_AddOrderDetailsTable.cs" />
+    <Compile Include="Migrations\201908281344319_AddOrderDetailsTable.Designer.cs">
+      <DependentUpon>201908281344319_AddOrderDetailsTable.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Dish.cs" />
+    <Compile Include="Models\Guest.cs" />
     <Compile Include="Models\IdentityModels.cs" />
+    <Compile Include="Models\Manager.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
+    <Compile Include="Models\Order.cs" />
+    <Compile Include="Models\OrderDetail.cs" />
+    <Compile Include="Models\Shift.cs" />
+    <Compile Include="Models\Table.cs" />
+    <Compile Include="Models\Waiter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
@@ -326,6 +365,30 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201908272342317_FixDish.NameColumn.resx">
       <DependentUpon>201908272342317_FixDish.NameColumn.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201908281218506_AddDescriptionToDishesTable.resx">
+      <DependentUpon>201908281218506_AddDescriptionToDishesTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201908281302386_AddGuestsTable.resx">
+      <DependentUpon>201908281302386_AddGuestsTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201908281307339_AddManagersTable.resx">
+      <DependentUpon>201908281307339_AddManagersTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201908281312506_AddWaitersTable.resx">
+      <DependentUpon>201908281312506_AddWaitersTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201908281323127_AddShiftsTable.resx">
+      <DependentUpon>201908281323127_AddShiftsTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201908281332193_AddTablesTable.resx">
+      <DependentUpon>201908281332193_AddTablesTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201908281338175_AddOrdersTable.resx">
+      <DependentUpon>201908281338175_AddOrdersTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201908281344319_AddOrderDetailsTable.resx">
+      <DependentUpon>201908281344319_AddOrderDetailsTable.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
