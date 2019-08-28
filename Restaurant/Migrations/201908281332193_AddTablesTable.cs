@@ -1,0 +1,27 @@
+namespace Restaurant.Migrations
+{
+    using System;
+    using System.Data.Entity.Migrations;
+    
+    public partial class AddTablesTable : DbMigration
+    {
+        public override void Up()
+        {
+            CreateTable(
+                "dbo.Tables",
+                c => new
+                    {
+                        Id = c.Int(nullable: false, identity: true),
+                        Name = c.String(),
+                        MaxGuests = c.Int(nullable: false),
+                    })
+                .PrimaryKey(t => t.Id);
+            
+        }
+        
+        public override void Down()
+        {
+            DropTable("dbo.Tables");
+        }
+    }
+}
