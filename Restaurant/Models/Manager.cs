@@ -13,5 +13,6 @@ namespace Restaurant.Models
         public int Id { get; set; }
         public string UserId { get; set; }
         public ApplicationUser User {get; set;}
+        public bool IsWorkingNow { get; set; }
     }
 }
