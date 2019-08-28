@@ -1,40 +1,60 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNet.Identity
+
+<!DOCTYPE html>
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewBag.Title - My ASP.NET Application</title>
+    <title>@ViewBag.Title - Ресторан</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
 
 </head>
 <body>
-    <div class="navbar navbar-dark navbar-fixed-top">
-        <div class="container">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                @Html.ActionLink("Имя приложения", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
-            </div>
-            <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Домашняя страница", "Index", "Home")</li>
-                    <li>@Html.ActionLink("Информация", "About", "Home")</li>
-                    <li>@Html.ActionLink("Связаться", "Contact", "Home")</li>
-                </ul>
-                @Html.Partial("_LoginPartial")
-            </div>
+<nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
+    @Html.ActionLink("Ресторан", "Index", "Home", new { area = "" }, htmlAttributes: new { @class = "navbar-brand" })
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                @{
+                    if (@User.IsInRole("admin"))
+                    {
+                        <li class="nav-item active">
+                            <a class="nav-link" href="#">Пользователи<span class="sr-only">(current)</span></a>
+                        </li>
+                    }
+                    if (@User.IsInRole("manager"))
+                    {
+                        <li class="nav-item active">
+                            <a class="nav-link" href="#">Заказы<span class="sr-only">(current)</span></a>
+                        </li>
+                        <li class="nav-item active">
+                            <a class="nav-link" href="#">Официанты<span class="sr-only">(current)</span></a>
+                        </li>
+                        <li class="nav-item active">
+                            @Html.ActionLink("Менеджер", "Index", "Manager", htmlAttributes: new { @class = "nav-link" }, routeValues: new { id = User.Identity.GetUserId() })
+                        </li>
+                    }
+                    if (User.IsInRole("waiter"))
+                    {
+                        <li class="nav-item active">
+                            @Html.ActionLink("Официант", "Index", "Waiter", htmlAttributes: new { @class = "nav-link" }, routeValues: new { id = User.Identity.GetUserId() })
+                        </li>
+                    }
+                }
+            </ul>
+            @Html.Partial("_LoginPartial")
         </div>
-    </div>
+    </nav>
     <div class="container body-content">
         @RenderBody()
         <hr />
         <footer>
-            <p>&copy; @DateTime.Now.Year - мое приложение ASP.NET</p>
+            <p>&copy; @DateTime.Now.Year - Ресторан на ASP.NET</p>
         </footer>
     </div>
 
