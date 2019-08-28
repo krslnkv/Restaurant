@@ -17,5 +17,6 @@ namespace Restaurant.Models
         public Waiter Waiter { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime? ExpDate { get; set; }
+        public bool IsClosed { get; set; }
     }
 }
