@@ -14,5 +14,10 @@ namespace Restaurant.Models
         public string UserId { get; set; }
         public ApplicationUser User {get; set;}
         public bool IsWorkingNow { get; set; }
+        public ICollection<Shift> Shifts { get; set; }
+        public Manager()
+        {
+            Shifts = new HashSet<Shift>();
+        }
     }
 }
