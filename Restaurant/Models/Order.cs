@@ -20,5 +20,6 @@ namespace Restaurant.Models
         public DateTime OrderTime { get; set; }
         public int WaiterId { get; set; }
         public Waiter Waiter { get; set; }
+        public int FinalPrice { get; set; }
     }
 }

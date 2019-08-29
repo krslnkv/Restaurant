@@ -277,6 +277,10 @@
     <Compile Include="Migrations\201908292038470_AddPriceColumnForDishsTables.Designer.cs">
       <DependentUpon>201908292038470_AddPriceColumnForDishsTables.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201908292042090_AddFinalPriceColumnForOrderssTable.cs" />
+    <Compile Include="Migrations\201908292042090_AddFinalPriceColumnForOrderssTable.Designer.cs">
+      <DependentUpon>201908292042090_AddFinalPriceColumnForOrderssTable.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Dish.cs" />
@@ -480,6 +484,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201908292038470_AddPriceColumnForDishsTables.resx">
       <DependentUpon>201908292038470_AddPriceColumnForDishsTables.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201908292042090_AddFinalPriceColumnForOrderssTable.resx">
+      <DependentUpon>201908292042090_AddFinalPriceColumnForOrderssTable.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
