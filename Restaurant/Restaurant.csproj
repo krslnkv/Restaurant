@@ -241,6 +241,38 @@
     <Compile Include="Migrations\201908282207054_AddIsClosedColumnToShiftsTable.Designer.cs">
       <DependentUpon>201908282207054_AddIsClosedColumnToShiftsTable.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201908290947517_AddGuestIdForOrdersTable.cs" />
+    <Compile Include="Migrations\201908290947517_AddGuestIdForOrdersTable.Designer.cs">
+      <DependentUpon>201908290947517_AddGuestIdForOrdersTable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201908291109101_AddOrderTimeForOrdersTable.cs" />
+    <Compile Include="Migrations\201908291109101_AddOrderTimeForOrdersTable.Designer.cs">
+      <DependentUpon>201908291109101_AddOrderTimeForOrdersTable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201908291206177_RemoveLastShiftFromWaiters.cs" />
+    <Compile Include="Migrations\201908291206177_RemoveLastShiftFromWaiters.Designer.cs">
+      <DependentUpon>201908291206177_RemoveLastShiftFromWaiters.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201908291337436_AddManyToManyRelationForWaiterAndShift.cs" />
+    <Compile Include="Migrations\201908291337436_AddManyToManyRelationForWaiterAndShift.Designer.cs">
+      <DependentUpon>201908291337436_AddManyToManyRelationForWaiterAndShift.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201908291341514_AddWaiterIdColumnForOrders.cs" />
+    <Compile Include="Migrations\201908291341514_AddWaiterIdColumnForOrders.Designer.cs">
+      <DependentUpon>201908291341514_AddWaiterIdColumnForOrders.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201908291343018_RemoveOrderDateColumnForOrderDetails.cs" />
+    <Compile Include="Migrations\201908291343018_RemoveOrderDateColumnForOrderDetails.Designer.cs">
+      <DependentUpon>201908291343018_RemoveOrderDateColumnForOrderDetails.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201908291346375_AddQuantityColumnForOrderDetails.cs" />
+    <Compile Include="Migrations\201908291346375_AddQuantityColumnForOrderDetails.Designer.cs">
+      <DependentUpon>201908291346375_AddQuantityColumnForOrderDetails.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201908291452511_AddIsBookedColumnForTaibles.cs" />
+    <Compile Include="Migrations\201908291452511_AddIsBookedColumnForTaibles.Designer.cs">
+      <DependentUpon>201908291452511_AddIsBookedColumnForTaibles.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Dish.cs" />
@@ -250,6 +282,7 @@
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\Order.cs" />
     <Compile Include="Models\OrderDetail.cs" />
+    <Compile Include="Models\OrderViewModel.cs" />
     <Compile Include="Models\SeedRoles.cs" />
     <Compile Include="Models\Shift.cs" />
     <Compile Include="Models\Table.cs" />
@@ -312,6 +345,7 @@
     <Content Include="Scripts\umd\popper.min.js" />
     <Content Include="Scripts\vue.js" />
     <Content Include="Scripts\vue.min.js" />
+    <Content Include="Views\Waiter\CreateOrder.cshtml" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -415,6 +449,30 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201908282207054_AddIsClosedColumnToShiftsTable.resx">
       <DependentUpon>201908282207054_AddIsClosedColumnToShiftsTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201908290947517_AddGuestIdForOrdersTable.resx">
+      <DependentUpon>201908290947517_AddGuestIdForOrdersTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201908291109101_AddOrderTimeForOrdersTable.resx">
+      <DependentUpon>201908291109101_AddOrderTimeForOrdersTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201908291206177_RemoveLastShiftFromWaiters.resx">
+      <DependentUpon>201908291206177_RemoveLastShiftFromWaiters.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201908291337436_AddManyToManyRelationForWaiterAndShift.resx">
+      <DependentUpon>201908291337436_AddManyToManyRelationForWaiterAndShift.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201908291341514_AddWaiterIdColumnForOrders.resx">
+      <DependentUpon>201908291341514_AddWaiterIdColumnForOrders.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201908291343018_RemoveOrderDateColumnForOrderDetails.resx">
+      <DependentUpon>201908291343018_RemoveOrderDateColumnForOrderDetails.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201908291346375_AddQuantityColumnForOrderDetails.resx">
+      <DependentUpon>201908291346375_AddQuantityColumnForOrderDetails.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201908291452511_AddIsBookedColumnForTaibles.resx">
+      <DependentUpon>201908291452511_AddIsBookedColumnForTaibles.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
