@@ -13,5 +13,6 @@ namespace Restaurant.Models
         public int Id { get; set; }
         public string Name { get; set; }
         public int MaxGuests { get; set; }
+        public bool IsBooked { get; set; }
     }
 }
