@@ -15,5 +15,10 @@ namespace Restaurant.Models
         public Shift Shift { get; set; }
         public int TableId { get; set; }
         public Table Table { get; set; }
+        public int GuestId { get; set; }
+        public Guest Guest { get; set; }
+        public DateTime OrderTime { get; set; }
+        public int WaiterId { get; set; }
+        public Waiter Waiter { get; set; }
     }
 }
