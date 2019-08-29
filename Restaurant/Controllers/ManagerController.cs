@@ -30,6 +30,8 @@ namespace Restaurant.Controllers
             {
                 var manager = await dbContext.Managers.Include(m => m.User).FirstOrDefaultAsync(m => m.Id == id);
                 manager.IsWorkingNow = true;
+                var shift = new Shift { Manager = manager, StartDate = DateTime.Now };
+                dbContext.Shifts.Add(shift);
                 await dbContext.SaveChangesAsync();
                 return RedirectToAction("Index", "Manager", new { id = manager.UserId });
             }
@@ -40,6 +42,9 @@ namespace Restaurant.Controllers
             {
                 var manager = await dbContext.Managers.Include(m => m.User).FirstOrDefaultAsync(m => m.Id == id);
                 manager.IsWorkingNow = false;
+                var shift = await dbContext.Shifts.Include(s => s.Manager).OrderByDescending(s => s.Id).FirstOrDefaultAsync(s => s.ManagerId == id);
+                shift.ExpDate = DateTime.UtcNow;
+                shift.IsClosed = true;
                 await dbContext.SaveChangesAsync();
                 return RedirectToAction("Index", "Manager", new { id = manager.UserId });
             }
