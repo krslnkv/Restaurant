@@ -1,0 +1,57 @@
+﻿@{
+    Layout = null;
+}
+<div class="container mt-5">
+    <h4>Заказы за смену</h4>
+    <div class="accordion" id="accordionExample">
+        @{
+            if (ViewBag.TodayOrders != null)
+            {
+                <h5>Всего: @ViewBag.TodayOrders.Count</h5>
+                foreach (var order in ViewBag.TodayOrders)
+                {
+                    <div class="card">
+                        @{ 
+                            var heading = $"heading{order.Id}";
+                            var collapse = $"collapse{order.Id}";
+                        }
+                        <div class="card-header" id="@heading">
+                            <h5 class="mb-0">
+                                @{
+                                    var orderinfo = $"#заказа:{order.Id} время заказа:{order.OrderTime.TimeOfDay} #стола {order.TableId} название стола {order.Table.Name} сумма {order.FinalPrice}";
+                                }
+                                <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#@{@collapse}" aria-expanded="true" aria-controls="collapseOne">
+                                    @orderinfo
+                                </button>
+                            </h5>
+                        </div>
+                        <div id="@collapse" class="collapse" aria-labelledby="@heading" data-parent="#accordionExample">
+                            <div class="card-body">
+                                <p class="card-text">Список блюд</p>
+                                <ul class="list-group list-group-flush">
+                                    @{
+                                        if (order.OrderDetails != null)
+                                        {
+                                            foreach (var detail in order.OrderDetails)
+                                            {
+                                                <li class="list-group-item">@detail.Dish.Name x @detail.Quantity</li>
+                                            }
+                                        }
+                                        else
+                                        {
+                                            <li class="list-group-item">Пустой заказ</li>
+                                        }
+                                    }
+                                </ul>
+                            </div>
+                            <div class="card-footer">
+                                <p>Общая сумма @order.FinalPrice</p>
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+        }
+    </div>
+</div>
+@Scripts.Render("~/bundles/jquery")

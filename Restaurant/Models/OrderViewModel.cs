@@ -1,11 +1,11 @@
-﻿namespace Restaurant.Models
+﻿using System.Collections.Generic;
+
+namespace Restaurant.Models
 {
     public class NewOrderModel
     {
-        public string GuestEmail { get; set; }
-        public string GuestName { get; set; }
-        public int TableId { get; set; }
-        public int WaiterId { get; set; }
+        public List<OrderDetail> OrderDetails { get; set; }
+        public Order Order { get; set; }
 
     }
 }

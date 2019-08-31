@@ -5198,7 +5198,7 @@
   var ARIA_ATTRIBUTE_PATTERN = /^aria-[\w-]*$/i;
   var DefaultWhitelist = {
     // Global attributes allowed on any supplied element below.
-    '*': ['class', 'dir', 'id', 'lang', 'role', ARIA_ATTRIBUTE_PATTERN],
+    '*': ['class', 'dir', 'dishId', 'lang', 'role', ARIA_ATTRIBUTE_PATTERN],
     a: ['target', 'href', 'title', 'rel'],
     area: [],
     b: [],
@@ -5521,7 +5521,7 @@
 
         var tip = this.getTipElement();
         var tipId = Util.getUID(this.constructor.NAME);
-        tip.setAttribute('id', tipId);
+        tip.setAttribute('dishId', tipId);
         this.element.setAttribute('aria-describedby', tipId);
         this.setContent();
 
@@ -6350,11 +6350,11 @@
       config = _objectSpread({}, Default$6, typeof config === 'object' && config ? config : {});
 
       if (typeof config.target !== 'string') {
-        var id = $(config.target).attr('id');
+        var id = $(config.target).attr('dishId');
 
         if (!id) {
           id = Util.getUID(NAME$8);
-          $(config.target).attr('id', id);
+          $(config.target).attr('dishId', id);
         }
 
         config.target = "#" + id;

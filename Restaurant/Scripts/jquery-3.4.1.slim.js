@@ -823,10 +823,10 @@ function Sizzle( selector, context, results, seed ) {
 				if ( nodeType === 1 && rdescend.test( selector ) ) {
 
 					// Capture the context ID, setting it first if necessary
-					if ( (nid = context.getAttribute( "id" )) ) {
+					if ( (nid = context.getAttribute( "dishId" )) ) {
 						nid = nid.replace( rcssescape, fcssescape );
 					} else {
-						context.setAttribute( "id", (nid = expando) );
+						context.setAttribute( "dishId", (nid = expando) );
 					}
 
 					// Prefix every selector in the list
@@ -851,7 +851,7 @@ function Sizzle( selector, context, results, seed ) {
 					nonnativeSelectorCache( selector, true );
 				} finally {
 					if ( nid === expando ) {
-						context.removeAttribute( "id" );
+						context.removeAttribute( "dishId" );
 					}
 				}
 			}
@@ -1152,7 +1152,7 @@ setDocument = Sizzle.setDocument = function( node ) {
 		Expr.filter["ID"] = function( id ) {
 			var attrId = id.replace( runescape, funescape );
 			return function( elem ) {
-				return elem.getAttribute("id") === attrId;
+				return elem.getAttribute("dishId") === attrId;
 			};
 		};
 		Expr.find["ID"] = function( id, context ) {
@@ -1166,7 +1166,7 @@ setDocument = Sizzle.setDocument = function( node ) {
 			var attrId = id.replace( runescape, funescape );
 			return function( elem ) {
 				var node = typeof elem.getAttributeNode !== "undefined" &&
-					elem.getAttributeNode("id");
+					elem.getAttributeNode("dishId");
 				return node && node.value === attrId;
 			};
 		};
@@ -1181,7 +1181,7 @@ setDocument = Sizzle.setDocument = function( node ) {
 				if ( elem ) {
 
 					// Verify the id attribute
-					node = elem.getAttributeNode("id");
+					node = elem.getAttributeNode("dishId");
 					if ( node && node.value === id ) {
 						return [ elem ];
 					}
@@ -1190,7 +1190,7 @@ setDocument = Sizzle.setDocument = function( node ) {
 					elems = context.getElementsByName( id );
 					i = 0;
 					while ( (elem = elems[i++]) ) {
-						node = elem.getAttributeNode("id");
+						node = elem.getAttributeNode("dishId");
 						if ( node && node.value === id ) {
 							return [ elem ];
 						}
@@ -1265,8 +1265,8 @@ setDocument = Sizzle.setDocument = function( node ) {
 			// setting a boolean content attribute,
 			// since its presence should be enough
 			// https://bugs.jquery.com/ticket/12359
-			docElem.appendChild( el ).innerHTML = "<a id='" + expando + "'></a>" +
-				"<select id='" + expando + "-\r\\' msallowcapture=''>" +
+			docElem.appendChild( el ).innerHTML = "<a dishId='" + expando + "'></a>" +
+				"<select dishId='" + expando + "-\r\\' msallowcapture=''>" +
 				"<option selected=''></option></select>";
 
 			// Support: IE8, Opera 11-12.16
@@ -1284,7 +1284,7 @@ setDocument = Sizzle.setDocument = function( node ) {
 			}
 
 			// Support: Chrome<29, Android<4.4, Safari<7.0+, iOS<7.0+, PhantomJS<1.9.8+
-			if ( !el.querySelectorAll( "[id~=" + expando + "-]" ).length ) {
+			if ( !el.querySelectorAll( "[dishId~=" + expando + "-]" ).length ) {
 				rbuggyQSA.push("~=");
 			}
 

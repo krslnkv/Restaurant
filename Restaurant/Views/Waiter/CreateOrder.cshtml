@@ -1,79 +1,60 @@
 ﻿@model Restaurant.Models.NewOrderModel
-@{ 
+@{
     Layout = null;
 }
-@*<form>
-    <div class="form-row">
-        <div class="form-group col-md-6">
-            <label for="inputEmail4">Email</label>
-            <input type="email" class="form-control" id="inputEmail4" placeholder="Email">
-        </div>
-        <div class="form-group col-md-6">
-            <label for="inputPassword4">Password</label>
-            <input type="password" class="form-control" id="inputPassword4" placeholder="Password">
-        </div>
-    </div>
-    <div class="form-group">
-        <label for="inputAddress">Address</label>
-        <input type="text" class="form-control" id="inputAddress" placeholder="1234 Main St">
-    </div>
-    <div class="form-group">
-        <label for="inputAddress2">Address 2</label>
-        <input type="text" class="form-control" id="inputAddress2" placeholder="Apartment, studio, or floor">
-    </div>
-    <div class="form-row">
-        <div class="form-group col-md-6">
-            <label for="inputCity">City</label>
-            <input type="text" class="form-control" id="inputCity">
-        </div>
-        <div class="form-group col-md-4">
-            <label for="inputState">State</label>
-            <select id="inputState" class="form-control">
-                <option selected>Choose...</option>
-                <option>...</option>
-            </select>
-        </div>
-        <div class="form-group col-md-2">
-            <label for="inputZip">Zip</label>
-            <input type="text" class="form-control" id="inputZip">
-        </div>
-    </div>
-    <div class="form-group">
-        <div class="form-check">
-            <input class="form-check-input" type="checkbox" id="gridCheck">
-            <label class="form-check-label" for="gridCheck">
-                Check me out
-            </label>
-        </div>
-    </div>
-    <button type="submit" class="btn btn-primary">Sign in</button>
-</form>*@
 @using (Html.BeginForm(FormMethod.Post))
 {@Html.ValidationSummary(true)
-<div class="form-row">
-    <div class="form-group col-md-6">
-        <h3>Новый заказ</h3>
+    <div class="form-row">
+        <div class="form-group col-md-6">
+            <h3>Новый заказ</h3>
+        </div>
+        <div class="form-group col-md-6"></div>
+        <div class="form-group col-md-6">
+            @Html.Label("Выберите столик")
+            @Html.DropDownList("table", (IEnumerable<SelectListItem>)ViewBag.Tables, new { @class = "form-control", @id = "table" })
+        </div>
+        <div class="form-group col-md-6">
+        </div>
+        <div class="form-group col-md-6">
+            @Html.Label("Выберите блюда")
+        </div>
     </div>
-    <div class="form-group col-md-6"></div>
-    <div class="form-group col-md-6">
-        @Html.LabelFor(Model => Model.GuestEmail, "E-mail гостя")
-        @Html.TextBoxFor(Model => Model.GuestEmail, new { @class = "form-control" })
-        @Html.ValidationMessageFor(Model => Model.GuestEmail, null, new { @class = "text-danger" })
+}
+<div class="container" id="dishsPanel">
+    <div class="row justify-content-start">
+        @foreach (var dish in ViewBag.Dishes)
+        {
+            <div class="card dish" id="@dish.Id" style="width: 20rem;">
+                <div class="card-body">
+                    <h5 class="card-title">@dish.Name</h5>
+                    <p class="card-text">@dish.Description</p>
+                </div>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">Цена: @dish.Price руб.</li>
+                </ul>
+                <div class="card-footer btns">
+                    <div class="row justify-content-center">
+                        <button name="add" data-id="@dish.Id" data-price="@dish.Price" class="btn btn-success add"><p class="h5">+</p></button>
+                        <p class="h5 mr-3 ml-3 mt-2 count" data-count="0">0</p>
+                        <button data-id="@dish.Id" data-price="@dish.Price" class="btn btn-danger remove"><p class="h5">-</p></button>
+                    </div>
+                </div>
+            </div>
+        }
     </div>
-    <div class="form-group col-md-6">
-        @Html.LabelFor(Model => Model.GuestName, "Имя гостя")
-        @Html.TextBoxFor(Model => Model.GuestName, new { @class = "form-control" })
-        @Html.ValidationMessageFor(Model => Model.GuestName, null, new { @class = "text-danger" })
+    <div class="row">
+        <p class="h4">Общее количество блюд:</p>
+        <p class="h4" id="allCount">0</p>
     </div>
-    <div class="form-group col-md-6">
-        @Html.LabelFor(Model => Model.TableId, "Выберите столик")
-        @Html.DropDownListFor(Model => Model.TableId, (IEnumerable<SelectListItem>)ViewBag.Tables, new { @class = "form-control", @id = "table" })
-        @Html.ValidationMessageFor(Model => Model.TableId, null, new { @class = "text-danger" })
+    <div class="row">
+        <p class="h4">Общая сумма:</p>
+        <p class="h4" id="allPrice">0</p>
     </div>
-    <div class="form-group col-md-6">
-        <button class="btn btn-primary" type="submit">Создать заказ</button>
-
+    <div class="row">
+        <input hidden id="shift" value="@ViewBag.Shift.Id" />
+        <button class="btn btn-primary" id="createOrder">Создать заказ</button>
     </div>
 </div>
-}
+@Scripts.Render("~/bundles/jquery")
+@Scripts.Render("~/Scripts/cart.js")
 

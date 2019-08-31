@@ -20,6 +20,7 @@
     {
         @Html.ActionLink("Закончить работу", "RemoveWaiterFromShift", "Waiter", htmlAttributes: new { @class = "btn btn-danger" }, routeValues: new { id = ViewBag.Waiter.Id });
         @Html.Action("CreateOrder");
+        @Html.Action("TodayOrders");
             }
 
         }
