@@ -1,0 +1,113 @@
+﻿@model Restaurant.Models.OrderFiltration
+@{
+    ViewBag.Title = "Заказы";
+}
+<div class="row">
+    <h2>Заказы</h2>
+</div>
+<div class="row">
+    <h3>Фильтрация заказов</h3>
+</div>
+<div class="row">
+    @{
+        var SelectIsActiveList = new SelectList(
+            new List<SelectListItem>
+            {
+                new SelectListItem {Text = "Активные", Value = "1"},
+                new SelectListItem {Text = "Завершенные", Value = "0"},
+                new SelectListItem {Text = "Все", Value = "2", Selected = true}
+                            }, "Value", "Text");
+        using (Html.BeginForm())
+        {
+            <div class="form-row">
+                <div class="col">
+                    <div class="form-group">
+                        @Html.LabelFor(Model => Model.IsActive, "Выберите статус заказа")
+                        @Html.DropDownListFor(Model => Model.IsActive, (IEnumerable<SelectListItem>)SelectIsActiveList, new { @class = "form-control", @id = "IsActive" })
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="form-row">
+                        @Html.LabelFor(Model => Model.WaiterId, "Выберите официанта");
+                        @Html.DropDownListFor(Model => Model.WaiterId, (IEnumerable<SelectListItem>)ViewBag.Waiters, new { @class = "form-control", @id = "Waiter" })
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="form-row">
+                        @Html.LabelFor(Model => Model.OrderDate, "Выберите дату");
+                        @Html.TextBoxFor(Model => Model.OrderDate, new { @type = "date", @class = "form-control", @id = "OrderDate" })
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <div class="form-row">
+                        <button class="btn btn-success mb-2" type="submit" name="sendMail">Отфильтровать</button>
+                    </div>
+                </div>
+            </div>
+        }
+    }
+</div>
+<div class="container-fluid">
+    <div class="row">
+        @{
+            if (ViewBag.Orders != null)
+            {
+                <div class="accordion" id="accordionExample">
+                    <h5>Всего: @ViewBag.Orders.Count</h5>
+                    @foreach (var order in ViewBag.Orders)
+                    {
+                        <div class="card">
+                            @{
+                                var heading = $"heading{order.Id}";
+                                var collapse = $"collapse{order.Id}";
+                            }
+                            <div class="card-header" id="@heading">
+                                <h5 class="mb-0">
+                                    @{
+                                        var orderinfo = $"#заказа: {order.Id}; дата заказа: {order.OrderTime.ToShortDateString()}; #стола: {order.TableId}; название стола: '{order.Table.Name}'; официант: {order.Waiter.User.Name} {order.Waiter.User.LastName}";
+                                    }
+                                    <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#@{@collapse}" aria-expanded="true" aria-controls="collapseOne">
+                                        @orderinfo
+                                    </button>
+                                </h5>
+                            </div>
+                            <div id="@collapse" class="collapse" aria-labelledby="@heading" data-parent="#accordionExample">
+                                <div class="card-body">
+                                    <p class="card-text">Список блюд</p>
+                                    <ul class="list-group list-group-flush">
+                                        @{
+                                            if (order.OrderDetails != null)
+                                            {
+                                                foreach (var detail in order.OrderDetails)
+                                                {
+                                                    <li class="list-group-item">@detail.Dish.Name x @detail.Quantity</li>
+                                                }
+                                            }
+                                            else
+                                            {
+                                                <li class="list-group-item">Пустой заказ</li>
+                                            }
+                                        }
+                                    </ul>
+                                </div>
+                                <div class="card-footer">
+                                    <p>Общая сумма @order.FinalPrice</p>
+                                    @{
+                                        if (order.IsActive == true)
+                                        {
+                                            @Html.ActionLink("Завершить заказ", "CloseOrder", "Manager", htmlAttributes: new { @class = "btn btn-danger" }, routeValues: new { id = order.Id });
+                                        }
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            }
+        }
+    </div>
+</div>
+
+

@@ -298,11 +298,13 @@
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\Order.cs" />
     <Compile Include="Models\OrderDetail.cs" />
+    <Compile Include="Models\OrderFiltration.cs" />
     <Compile Include="Models\OrderViewModel.cs" />
     <Compile Include="Models\SeedRoles.cs" />
     <Compile Include="Models\Shift.cs" />
     <Compile Include="Models\Table.cs" />
     <Compile Include="Models\Waiter.cs" />
+    <Compile Include="Models\WaiterViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
@@ -409,6 +411,7 @@
     <Content Include="Views\Waiter\Index.cshtml" />
     <Content Include="Views\Manager\Index.cshtml" />
     <Content Include="Views\Waiter\TodayOrders.cshtml" />
+    <Content Include="Views\Manager\OrdersList.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

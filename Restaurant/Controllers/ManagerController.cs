@@ -88,5 +88,49 @@ namespace Restaurant.Controllers
                 return RedirectToAction("Index", "Manager", new { id = User.Identity.GetUserId() });
             }
         }
+
+        public async Task<ActionResult> OrdersList()
+        {
+            using (var dbContext = new ApplicationDbContext())
+            {
+                var waitersViewModel = await dbContext.Waiters.Select(w => new WaiterViewModel()
+                {
+                    Id = w.Id,
+                    //Так как Linq to entities не может распознать String.Format используется конкатинация
+                    WaiterName = w.User.Name+" "+w.User.LastName
+                }).ToListAsync();
+                waitersViewModel.Add(new WaiterViewModel { Id = 0, WaiterName = "Не выбрано" });
+                ViewBag.Waiters = new SelectList(waitersViewModel, "Id", "WaiterName");
+                ViewBag.Orders = await dbContext.Orders.Include(o => o.OrderDetails).Include("OrderDetails.Dish").Include(o => o.Shift).Include(o => o.Waiter).Include("Waiter.User").Include(o => o.Table).ToListAsync();
+                return View();
+            }
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> OrdersList(OrderFiltration filtration)
+        {
+            using (var dbContext = new ApplicationDbContext())
+            {
+                var waitersViewModel = await dbContext.Waiters.Select(w => new WaiterViewModel()
+                {
+                    Id = w.Id,
+                    //Так как Linq to entities не может распознать String.Format используется конкатинация
+                    WaiterName = w.User.Name + " " + w.User.LastName
+                }).ToListAsync();
+                waitersViewModel.Add(new WaiterViewModel { Id = 0, WaiterName = "Не выбрано" });
+                ViewBag.Waiters = new SelectList(waitersViewModel, "Id", "WaiterName");
+                var orders = await dbContext.Orders.Include(o => o.OrderDetails).Include("OrderDetails.Dish").Include(o => o.Shift).Include(o => o.Waiter).Include("Waiter.User").Include(o => o.Table).ToListAsync();
+                if (filtration.IsActive == 0)
+                    orders = orders.Where(o => o.IsActive == false).ToList();
+                if (filtration.IsActive == 1)
+                    orders = orders.Where(o => o.IsActive == true).ToList();
+                if (filtration.WaiterId > 0)
+                    orders = orders.Where(o => o.WaiterId == filtration.WaiterId).ToList();
+                if (filtration.OrderDate != null)
+                    orders = orders.Where(o => o.OrderTime.Date == (DateTime)filtration.OrderDate.Value.Date).ToList();
+                ViewBag.Orders = orders;
+                return View();
+            }
+        }
     }
 }
