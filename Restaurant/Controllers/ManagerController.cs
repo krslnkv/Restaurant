@@ -7,6 +7,7 @@ using System.Data.Entity;
 using Restaurant.Dal;
 using Restaurant.Models;
 using System.Threading.Tasks;
+using Microsoft.AspNet.Identity;
 
 namespace Restaurant.Controllers
 {
@@ -18,8 +19,8 @@ namespace Restaurant.Controllers
         {
             using (var dbContext = new ApplicationDbContext())
             {
-                var manager = dbContext.Managers.Include(m => m.User).FirstOrDefault(m => m.UserId == id);
-                ViewBag.Manager = manager;
+                ViewBag.Manager = dbContext.Managers.Include(m => m.User).FirstOrDefault(m => m.UserId == id);
+                ViewBag.TodayOrders = dbContext.Orders.Include(o => o.OrderDetails).Include("OrderDetails.Dish").Include(o => o.Shift).Include(o => o.Waiter).Include("Waiter.User").Include(o => o.Table).Where(o => o.Shift.IsClosed == false).ToList();
             }
             return View();
         }
@@ -28,6 +29,9 @@ namespace Restaurant.Controllers
         {
             using (var dbContext = new ApplicationDbContext())
             {
+                var shiftIsNotClosed = await dbContext.Shifts.FirstOrDefaultAsync(s => s.IsClosed == false);
+                if (shiftIsNotClosed!=null)
+                    return RedirectToAction("Index", "Manager", new { id = User.Identity.GetUserId() });
                 var manager = await dbContext.Managers.Include(m => m.User).FirstOrDefaultAsync(m => m.Id == id);
                 manager.IsWorkingNow = true;
                 var shift = new Shift { Manager = manager, StartDate = DateTime.Now };
@@ -42,11 +46,46 @@ namespace Restaurant.Controllers
             {
                 var manager = await dbContext.Managers.Include(m => m.User).FirstOrDefaultAsync(m => m.Id == id);
                 manager.IsWorkingNow = false;
-                var shift = await dbContext.Shifts.Include(s => s.Manager).OrderByDescending(s => s.Id).FirstOrDefaultAsync(s => s.ManagerId == id);
-                shift.ExpDate = DateTime.UtcNow;
-                shift.IsClosed = true;
+                var shiftsToClose = await dbContext.Shifts.Where(s=>s.IsClosed==false).ToListAsync();
+                if (shiftsToClose!=null)
+                {
+                    for (int i = 0; i < shiftsToClose.Count; i++)
+                    {
+                        shiftsToClose[i].ExpDate = DateTime.Now;
+                        shiftsToClose[i].IsClosed = true;
+                    }
+                }
+                var waitersIsWorkingNow = await dbContext.Waiters.Where(w=>w.IsWorkingNow==true).ToListAsync();
+                if (waitersIsWorkingNow != null)
+                {
+                    for (int i = 0; i < waitersIsWorkingNow.Count; i++)
+                    {
+                        waitersIsWorkingNow[i].IsWorkingNow = false;
+                    }
+                }
+                var tablesIsBooked = await dbContext.Tables.Where(t=>t.IsBooked==true).ToListAsync();
+                if (tablesIsBooked!=null)
+                {
+                    for (int i = 0; i < tablesIsBooked.Count; i++)
+                    {
+                        tablesIsBooked[i].IsBooked = false;
+                    }
+                }
                 await dbContext.SaveChangesAsync();
                 return RedirectToAction("Index", "Manager", new { id = manager.UserId });
+            }
+        }
+
+        [HttpGet]
+        public ActionResult CloseOrder(int id)
+        {
+            using (var dbContext = new ApplicationDbContext())
+            {
+                var order = dbContext.Orders.Include(o => o.Table).FirstOrDefault(o => o.Id == id);
+                order.IsActive = false;
+                order.Table.IsBooked = false;
+                dbContext.SaveChanges();
+                return RedirectToAction("Index", "Manager", new { id = User.Identity.GetUserId() });
             }
         }
     }

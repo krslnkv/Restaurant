@@ -285,6 +285,10 @@
     <Compile Include="Migrations\201908311007375_RemoveGuestIdColumnFromOrderssTable.Designer.cs">
       <DependentUpon>201908311007375_RemoveGuestIdColumnFromOrderssTable.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201908312025307_AddIsActiveForOrders.cs" />
+    <Compile Include="Migrations\201908312025307_AddIsActiveForOrders.Designer.cs">
+      <DependentUpon>201908312025307_AddIsActiveForOrders.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Dish.cs" />
@@ -496,6 +500,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201908311007375_RemoveGuestIdColumnFromOrderssTable.resx">
       <DependentUpon>201908311007375_RemoveGuestIdColumnFromOrderssTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201908312025307_AddIsActiveForOrders.resx">
+      <DependentUpon>201908312025307_AddIsActiveForOrders.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
