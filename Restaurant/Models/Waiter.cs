@@ -21,10 +21,12 @@ namespace Restaurant.Models
         public bool IsWork { get; set; }
 
         public ICollection<Shift> Shifts { get; set; }
+        public ICollection<Order> Orders { get; set; }
 
         public Waiter()
         {
             Shifts = new HashSet<Shift>();
+            Orders = new HashSet<Order>();
         }
     }
 }

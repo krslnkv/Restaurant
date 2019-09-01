@@ -132,5 +132,48 @@ namespace Restaurant.Controllers
                 return View();
             }
         }
+
+        public async Task<ActionResult> WaitersList()
+        {
+            using (var dbContext = new ApplicationDbContext())
+            {
+                //По умолчанию возвращает официантов в текущей смене
+                ViewBag.Waiters = await dbContext.Waiters.Include(w=>w.User).Where(w => w.IsWork == true && w.IsWorkingNow == true).ToListAsync();
+                return View();
+            }
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> WaitersList(WaiterFiltration filtration)
+        {
+            using (var dbContext = new ApplicationDbContext())
+            {
+                var waiters = await dbContext.Waiters.Include(w => w.User).ToListAsync();
+                if (filtration.IsWork == 1)
+                    waiters = waiters.Where(w => w.IsWork == true).ToList();
+                if (filtration.IsWork == 0)
+                    waiters = waiters.Where(w => w.IsWork == false).ToList();
+                if (filtration.IsWorkingNow == 1)
+                    waiters = waiters.Where(w => w.IsWorkingNow == true).ToList();
+                if (filtration.IsWorkingNow == 0)
+                    waiters = waiters.Where(w => w.IsWorkingNow == false).ToList();
+                if (String.IsNullOrEmpty(filtration.WaiterNameAndLastName) == false ||
+                    String.IsNullOrWhiteSpace(filtration.WaiterNameAndLastName) == false)
+                    waiters = waiters.Where(w => w.User.Name + " " + w.User.LastName == filtration.WaiterNameAndLastName).ToList();
+                ViewBag.Waiters = waiters;
+                return View();
+            }
+        }
+
+        public async Task<ActionResult> RemoveWaiterFromShift(int id)
+        {
+            using (var dbContext = new ApplicationDbContext())
+            {
+                var waiter = await dbContext.Waiters.Include(w => w.User).FirstOrDefaultAsync(w => w.Id == id);
+                waiter.IsWorkingNow = false;
+                await dbContext.SaveChangesAsync();
+                return RedirectToAction("WaitersList", "Manager", new { id = waiter.UserId });
+            }
+        }
     }
 }
