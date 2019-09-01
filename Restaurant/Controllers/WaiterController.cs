@@ -88,7 +88,7 @@ namespace Restaurant.Controllers
                 var table = dbContext.Tables.Find(newOrderModel.Order.TableId);
                 var shift = dbContext.Shifts.Include(s => s.Waiters).OrderByDescending(s => s.Id).FirstOrDefault(s => s.IsClosed == false);
                 var order = new Order { Waiter = waiter, Shift = shift, Table = table,
-                    OrderTime = DateTime.Now, FinalPrice=newOrderModel.Order.FinalPrice };
+                    OrderTime = DateTime.Now, FinalPrice=newOrderModel.Order.FinalPrice, IsActive=true };
                 dbContext.Orders.Add(order);
                 table.IsBooked = true;
                 dbContext.SaveChanges();
@@ -108,10 +108,21 @@ namespace Restaurant.Controllers
             using (var dbContext = new ApplicationDbContext())
             {
                 var waiterId = User.Identity.GetUserId();
-                var od = new Order { OrderTime = DateTime.Now };
-                //od.OrderTime.TimeOfDay
                 ViewBag.TodayOrders = dbContext.Orders.Include(o => o.OrderDetails).Include("OrderDetails.Dish").Include(o=>o.Shift).Include(o=>o.Waiter).Include(o=>o.Table).Where(o=>o.Shift.IsClosed==false&&o.Waiter.UserId==waiterId).ToList();
                     return View();
+            }
+        }
+
+        [HttpGet]
+        public ActionResult CloseOrder(int id)
+        {
+            using (var dbContext = new ApplicationDbContext())
+            {
+                var order = dbContext.Orders.Include(o=>o.Table).FirstOrDefault(o=>o.Id==id);
+                order.IsActive = false;
+                order.Table.IsBooked = false;
+                dbContext.SaveChanges();
+                return RedirectToAction("Index", "Waiter", new { id = User.Identity.GetUserId() });
             }
         }
 

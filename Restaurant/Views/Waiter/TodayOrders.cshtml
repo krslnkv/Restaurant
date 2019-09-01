@@ -45,7 +45,13 @@
                                 </ul>
                             </div>
                             <div class="card-footer">
-                                <p>Общая сумма @order.FinalPrice</p>
+                                <p>Общая сумма @order.FinalPrice</p> 
+                                @{ 
+                                    if (order.IsActive==true)
+                                    {
+                                        @Html.ActionLink("Завершить заказ", "CloseOrder", "Waiter", htmlAttributes: new { @class = "btn btn-danger" }, routeValues: new { id = order.Id });
+                                    }
+                                }
                             </div>
                         </div>
                     </div>
