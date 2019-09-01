@@ -19,6 +19,7 @@ namespace Restaurant.Models
         public int WaiterId { get; set; }
         public Waiter Waiter { get; set; }
         public int FinalPrice { get; set; }
+        public bool IsActive { get; set; }
         public ICollection<OrderDetail> OrderDetails { get; set; }
         public Order()
         {
