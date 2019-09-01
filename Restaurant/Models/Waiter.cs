@@ -15,6 +15,11 @@ namespace Restaurant.Models
         public ApplicationUser User { get; set; }
         public bool IsWorkingNow { get; set; }
 
+        //определяет работает официант или нет,
+        //так как при удалении официанта нельзя будет
+        //получить доступ к его заказм
+        public bool IsWork { get; set; }
+
         public ICollection<Shift> Shifts { get; set; }
 
         public Waiter()
