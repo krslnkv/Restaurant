@@ -14,6 +14,7 @@ using System.IO;
 
 namespace Restaurant.Controllers
 {
+    [Authorize (Roles ="manager, waiter")]
     public class WaiterController : Controller
     {
         public ActionResult Index()
@@ -67,9 +68,9 @@ namespace Restaurant.Controllers
         {
             using (var dbContext = new ApplicationDbContext())
             {
-                ViewBag.Dishes = dbContext.Dishes.ToList();
+                ViewBag.Dishes = dbContext.Dishes.Where(d=>d.IsShow==true).ToList();
                 ViewBag.Shift = dbContext.Shifts.FirstOrDefault(s => s.IsClosed == false);
-                ViewBag.Tables = new SelectList(dbContext.Tables.Where(t => t.IsBooked == false).ToList(), "Id", "Name");
+                ViewBag.Tables = new SelectList(dbContext.Tables.Where(t => t.IsBooked == false&&t.IsShow==true).ToList(), "Id", "Name");
             }
             return View();
         }
