@@ -1,0 +1,88 @@
+﻿@model Restaurant.Models.TableFiltertioncs
+@{
+    ViewBag.Title = "TablesList";
+}
+<div class="row">
+    <h2>Столы</h2>
+</div>
+<div class="row">
+    <h3>Фильтрация столов</h3>
+</div>
+<div class="row">
+    @{
+        var IsShowList = new SelectList(
+            new List<SelectListItem>
+            {
+                new SelectListItem {Text = "Доступны в меню заказа", Value = "1"},
+                new SelectListItem {Text = "Скрыты в меню заказа", Value = "0"},
+                new SelectListItem {Text = "Все", Value = "2", Selected = true}
+                                            }, "Value", "Text");
+        var IsBookedList = new SelectList(
+            new List<SelectListItem>
+            {
+                new SelectListItem {Text = "Заняты", Value = "1"},
+                new SelectListItem {Text = "Не заняты", Value = "0"},
+                new SelectListItem {Text = "Все", Value = "2", Selected = true}
+                                            }, "Value", "Text");
+        using (Html.BeginForm())
+        {
+            <div class="form-row">
+                <div class="col">
+                    <div class="form-group">
+                        @Html.LabelFor(Model => Model.IsShow, "Выберите, скрыт стол или нет?")
+                        @Html.DropDownListFor(Model => Model.IsShow, (IEnumerable<SelectListItem>)IsShowList, new { @class = "form-control", @id = "IsActive" })
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="form-row">
+                        @Html.LabelFor(Model => Model.IsBooked, "Выберите, занят или нет?")
+                        @Html.DropDownListFor(Model => Model.IsBooked, (IEnumerable<SelectListItem>)IsBookedList, new { @class = "form-control", @id = "Waiter" })
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <div class="form-row">
+                        <button class="btn btn-success mb-2" type="submit" name="filter">Отфильтровать</button>
+                    </div>
+                </div>
+            </div>
+        }
+    }
+</div>
+<div class="row">
+    @Html.ActionLink("Добавить новый","AddTable", "Manager", htmlAttributes: new { @class = "btn btn-primary"})
+</div>
+@{
+    if (ViewBag.Tables != null)
+    {
+    <div class="row">
+        <h4>Всего: @ViewBag.Tables.Count</h4>
+    </div>
+        <div class="row justify-content-start">
+            @foreach (var table in ViewBag.Tables)
+            {
+            <div class="card m-2" id="@table.Id" style="width: 20rem;">
+                <dvi class="card-header">
+                    <p>@table.Name</p>
+                </dvi>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">Количество человек: @table.MaxGuests</li>
+                </ul>
+                <div class="card-footer btns">
+                    <div class="row">
+                        @if (table.IsShow == true)
+                        {
+                        <div class="col">
+                            @Html.ActionLink("Скрыть для заказов", "HideFromOrders", "Manager", routeValues: new { id = table.Id }, htmlAttributes: new { @class = "btn btn-danger" })
+                        </div>
+                        }
+                        @Html.ActionLink("Изменить", "EditTable", "Manager", routeValues: new { id = table.Id }, htmlAttributes: new { @class = "btn btn-primary" })
+                    </div>
+                </div>
+            </div>
+            }
+        </div>
+        }
+    }
+

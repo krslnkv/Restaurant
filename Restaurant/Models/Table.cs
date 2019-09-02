@@ -11,8 +11,11 @@ namespace Restaurant.Models
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
+        [Required]
         public string Name { get; set; }
+        [Required]
         public int MaxGuests { get; set; }
         public bool IsBooked { get; set; }
+        public bool IsShow { get; set; }
     }
 }
