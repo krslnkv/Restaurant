@@ -21,23 +21,24 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mr-auto">
                 @{
-                    if (@User.IsInRole("admin"))
-                    {
-                        <li class="nav-item active">
-                            <a class="nav-link" href="#">Пользователи<span class="sr-only">(current)</span></a>
-                        </li>
-                    }
                     if (@User.IsInRole("manager"))
                     {
                         <li class="nav-item active">
-                            <a class="nav-link" href="#">Заказы<span class="sr-only">(current)</span></a>
+                            @Html.ActionLink("Список блюд", "DishsList", "Manager", htmlAttributes: new { @class = "nav-link" }, routeValues: new { id = User.Identity.GetUserId() })
                         </li>
                         <li class="nav-item active">
-                            <a class="nav-link" href="#">Официанты<span class="sr-only">(current)</span></a>
+                            @Html.ActionLink("Список официантов", "WaitersList", "Manager", htmlAttributes: new { @class = "nav-link" }, routeValues: new { id = User.Identity.GetUserId() })
+                        </li>
+                        <li class="nav-item active">
+                            @Html.ActionLink("Список столов", "TablesList", "Manager", htmlAttributes: new { @class = "nav-link" }, routeValues: new { id = User.Identity.GetUserId() })
+                        </li>
+                        <li class="nav-item active">
+                            @Html.ActionLink("Список заказов", "OrdersList", "Manager", htmlAttributes: new { @class = "nav-link" }, routeValues: new { id = User.Identity.GetUserId() })
                         </li>
                         <li class="nav-item active">
                             @Html.ActionLink("Менеджер", "Index", "Manager", htmlAttributes: new { @class = "nav-link" }, routeValues: new { id = User.Identity.GetUserId() })
                         </li>
+
                     }
                     if (User.IsInRole("waiter"))
                     {

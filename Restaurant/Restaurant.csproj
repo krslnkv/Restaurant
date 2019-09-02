@@ -293,9 +293,22 @@
     <Compile Include="Migrations\201909011912051_AddIsWorkColumnForWaitersTable.Designer.cs">
       <DependentUpon>201909011912051_AddIsWorkColumnForWaitersTable.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201909021559412_AddIsShowColumnForTablesTable.cs" />
+    <Compile Include="Migrations\201909021559412_AddIsShowColumnForTablesTable.Designer.cs">
+      <DependentUpon>201909021559412_AddIsShowColumnForTablesTable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201909021717570_AddIsShowColumnForTablesTable1.cs" />
+    <Compile Include="Migrations\201909021717570_AddIsShowColumnForTablesTable1.Designer.cs">
+      <DependentUpon>201909021717570_AddIsShowColumnForTablesTable1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201909022122068_AddIsShowColumnForDishsTable.cs" />
+    <Compile Include="Migrations\201909022122068_AddIsShowColumnForDishsTable.Designer.cs">
+      <DependentUpon>201909022122068_AddIsShowColumnForDishsTable.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Dish.cs" />
+    <Compile Include="Models\DishFiltration.cs" />
     <Compile Include="Models\Guest.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\Manager.cs" />
@@ -307,6 +320,7 @@
     <Compile Include="Models\SeedRoles.cs" />
     <Compile Include="Models\Shift.cs" />
     <Compile Include="Models\Table.cs" />
+    <Compile Include="Models\TableFiltertioncs.cs" />
     <Compile Include="Models\Waiter.cs" />
     <Compile Include="Models\WaiterFiltration.cs" />
     <Compile Include="Models\WaiterViewModel.cs" />
@@ -418,6 +432,12 @@
     <Content Include="Views\Waiter\TodayOrders.cshtml" />
     <Content Include="Views\Manager\OrdersList.cshtml" />
     <Content Include="Views\Manager\WaitersList.cshtml" />
+    <Content Include="Views\Manager\TablesList.cshtml" />
+    <Content Include="Views\Manager\AddTable.cshtml" />
+    <Content Include="Views\Manager\EditTable.cshtml" />
+    <Content Include="Views\Manager\DishsList.cshtml" />
+    <Content Include="Views\Manager\AddDish.cshtml" />
+    <Content Include="Views\Manager\EditDish.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -515,6 +535,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201909011912051_AddIsWorkColumnForWaitersTable.resx">
       <DependentUpon>201909011912051_AddIsWorkColumnForWaitersTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201909021559412_AddIsShowColumnForTablesTable.resx">
+      <DependentUpon>201909021559412_AddIsShowColumnForTablesTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201909021717570_AddIsShowColumnForTablesTable1.resx">
+      <DependentUpon>201909021717570_AddIsShowColumnForTablesTable1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201909022122068_AddIsShowColumnForDishsTable.resx">
+      <DependentUpon>201909022122068_AddIsShowColumnForDishsTable.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
