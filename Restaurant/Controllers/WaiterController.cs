@@ -46,9 +46,10 @@ namespace Restaurant.Controllers
                     return RedirectToAction("Index", "Waiter", new { id = waiter.UserId });
                 }
                 shift.Waiters.Add(waiter);
+                if (waiter == null) return RedirectToAction("Index", "Home");
                 waiter.IsWorkingNow = true;
                 await dbContext.SaveChangesAsync();
-                return RedirectToAction("Index", "Waiter", new { id = waiter.UserId });
+                return RedirectToAction("Index", "Waiter", new {id = waiter.UserId});
             }
         }
 
@@ -57,9 +58,10 @@ namespace Restaurant.Controllers
             using (var dbContext = new ApplicationDbContext())
             {
                 var waiter = await dbContext.Waiters.Include(w => w.User).FirstOrDefaultAsync(w => w.Id == id);
+                if (waiter == null) return RedirectToAction("Index", "Home");
                 waiter.IsWorkingNow = false;
                 await dbContext.SaveChangesAsync();
-                return RedirectToAction("Index", "Waiter", new { id = waiter.UserId });
+                return RedirectToAction("Index", "Waiter", new {id = waiter.UserId});
             }
         }
 
@@ -80,10 +82,10 @@ namespace Restaurant.Controllers
         {
             using (var dbContext = new ApplicationDbContext())
             {
-                Stream req = Request.InputStream;
+                var req = Request.InputStream;
                 req.Seek(0, SeekOrigin.Begin);
-                string orderJson = new StreamReader(req).ReadToEnd();
-                NewOrderModel newOrderModel = JsonConvert.DeserializeObject<NewOrderModel>(orderJson);
+                var orderJson = new StreamReader(req).ReadToEnd();
+                var newOrderModel = JsonConvert.DeserializeObject<NewOrderModel>(orderJson);
                 var waiterId = User.Identity.GetUserId();
                 var waiter = dbContext.Waiters.FirstOrDefault(w => w.UserId == waiterId);
                 var table = dbContext.Tables.Find(newOrderModel.Order.TableId);
@@ -91,12 +93,12 @@ namespace Restaurant.Controllers
                 var order = new Order { Waiter = waiter, Shift = shift, Table = table,
                     OrderTime = DateTime.Now, FinalPrice=newOrderModel.Order.FinalPrice, IsActive=true };
                 dbContext.Orders.Add(order);
-                table.IsBooked = true;
+                if (table != null) table.IsBooked = true;
                 dbContext.SaveChanges();
-                for (int i=0; i<newOrderModel.OrderDetails.Count; i++)
+                foreach (var od in newOrderModel.OrderDetails)
                 {
-                    newOrderModel.OrderDetails[i].OrderId = order.Id;
-                    dbContext.OrderDetails.Add(newOrderModel.OrderDetails[i]);
+                    od.OrderId = order.Id;
+                    dbContext.OrderDetails.Add(od);
                 }
                 dbContext.SaveChanges();
                 ViewBag.Tables = new SelectList(dbContext.Tables.Where(t=>t.IsBooked==false).ToList(), "Id", "Name");
@@ -120,49 +122,15 @@ namespace Restaurant.Controllers
             using (var dbContext = new ApplicationDbContext())
             {
                 var order = dbContext.Orders.Include(o=>o.Table).FirstOrDefault(o=>o.Id==id);
-                order.IsActive = false;
-                order.Table.IsBooked = false;
+                if (order != null)
+                {
+                    order.IsActive = false;
+                    order.Table.IsBooked = false;
+                }
+
                 dbContext.SaveChanges();
                 return RedirectToAction("Index", "Waiter", new { id = User.Identity.GetUserId() });
             }
-        }
-
-        private string SetPassword()
-        {
-            //int[] arr = new int[16];
-            Random rnd = new Random();
-            string password = "";
-            for (int i=0; i<16; i++)
-            {
-                char c = (char)rnd.Next(33, 125);
-                password += c;
-            }
-            return password;
-        }
-
-        private Guest CreateUser(string name, string email, ApplicationUserManager userManager, ApplicationDbContext dbContext)
-        {
-            var user = new ApplicationUser { Name = name, Email = email, UserName=email };
-            user.LastName = SetPassword();
-            var result = userManager.Create(user, user.LastName);
-            if (result.Succeeded)
-            {
-                result = userManager.AddToRole(user.Id, "guest");
-                if (result.Succeeded)
-                {
-                    Guest guest = CreateGuest(user.Id, dbContext);
-                    return guest;
-                }
-            }
-            return null;
-        }
-
-        private Guest CreateGuest(string id, ApplicationDbContext dbContext)
-        {
-            Guest guest = new Guest { UserId = id };
-            dbContext.Guests.Add(guest);
-            dbContext.SaveChanges();
-            return guest;
         }
     }
 }

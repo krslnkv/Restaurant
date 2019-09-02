@@ -317,7 +317,6 @@
     <Compile Include="Models\OrderDetail.cs" />
     <Compile Include="Models\OrderFiltration.cs" />
     <Compile Include="Models\OrderViewModel.cs" />
-    <Compile Include="Models\SeedRoles.cs" />
     <Compile Include="Models\Shift.cs" />
     <Compile Include="Models\Table.cs" />
     <Compile Include="Models\TableFiltertioncs.cs" />

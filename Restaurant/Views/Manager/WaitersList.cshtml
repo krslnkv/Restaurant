@@ -10,14 +10,14 @@
 </div>
 <div class="row">
     @{
-        var IsWorkList = new SelectList(
+        var isWorkList = new SelectList(
             new List<SelectListItem>
             {
                 new SelectListItem {Text = "Работают", Value = "1"},
                 new SelectListItem {Text = "Работали ранее", Value = "0"},
                 new SelectListItem {Text = "Все", Value = "2", Selected = true}
                                     }, "Value", "Text");
-        var IsWorkingNowList = new SelectList(
+        var isWorkingNowList = new SelectList(
             new List<SelectListItem>
             {
                 new SelectListItem {Text = "В текущей смене", Value = "1"},
@@ -30,13 +30,13 @@
                 <div class="col">
                     <div class="form-group">
                         @Html.LabelFor(Model=>Model.IsWork, "Выберите, работает официант или уволен?")
-                        @Html.DropDownListFor(Model => Model.IsWork, (IEnumerable<SelectListItem>)IsWorkList, new { @class = "form-control", @id = "IsActive" })
+                        @Html.DropDownListFor(Model => Model.IsWork, (IEnumerable<SelectListItem>)isWorkList, new { @class = "form-control", @id = "IsActive" })
                     </div>
                 </div>
                 <div class="col">
                     <div class="form-row">
                         @Html.LabelFor(Model => Model.IsWorkingNow, "Выберите, в текущей он смене или нет?");
-                        @Html.DropDownListFor(Model => Model.IsWorkingNow, (IEnumerable<SelectListItem>)IsWorkingNowList, new { @class = "form-control", @id = "Waiter" })
+                        @Html.DropDownListFor(Model => Model.IsWorkingNow, (IEnumerable<SelectListItem>)isWorkingNowList, new { @class = "form-control", @id = "Waiter" })
                     </div>
                 </div>
                 <div class="col">

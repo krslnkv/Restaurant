@@ -34,11 +34,15 @@ namespace Restaurant.Controllers
                 if (shiftIsNotClosed!=null)
                     return RedirectToAction("Index", "Manager", new { id = User.Identity.GetUserId() });
                 var manager = await dbContext.Managers.Include(m => m.User).FirstOrDefaultAsync(m => m.Id == id);
-                manager.IsWorkingNow = true;
-                var shift = new Shift { Manager = manager, StartDate = DateTime.Now };
-                dbContext.Shifts.Add(shift);
-                await dbContext.SaveChangesAsync();
-                return RedirectToAction("Index", "Manager", new { id = manager.UserId });
+                if (manager != null)
+                {
+                    manager.IsWorkingNow = true;
+                    var shift = new Shift { Manager = manager, StartDate = DateTime.Now };
+                    dbContext.Shifts.Add(shift);
+                    await dbContext.SaveChangesAsync();
+                    return RedirectToAction("Index", "Manager", new { id = manager.UserId });
+                }
+                return RedirectToAction("Index", "Home");
             }
         }
         public async Task<ActionResult> StopManagerShift(int id)
@@ -46,30 +50,31 @@ namespace Restaurant.Controllers
             using (var dbContext = new ApplicationDbContext())
             {
                 var manager = await dbContext.Managers.Include(m => m.User).FirstOrDefaultAsync(m => m.Id == id);
-                manager.IsWorkingNow = false;
+                if (manager!=null) 
+                    manager.IsWorkingNow = false;
                 var shiftsToClose = await dbContext.Shifts.Where(s=>s.IsClosed==false).ToListAsync();
-                if (shiftsToClose!=null)
+                if (shiftsToClose.Count!=0)
                 {
-                    for (int i = 0; i < shiftsToClose.Count; i++)
+                    foreach (var s in shiftsToClose)
                     {
-                        shiftsToClose[i].ExpDate = DateTime.Now;
-                        shiftsToClose[i].IsClosed = true;
+                        s.ExpDate = DateTime.Now;
+                        s.IsClosed = true;
                     }
                 }
                 var waitersIsWorkingNow = await dbContext.Waiters.Where(w=>w.IsWorkingNow==true).ToListAsync();
-                if (waitersIsWorkingNow != null)
+                if (waitersIsWorkingNow.Count != 0)
                 {
-                    for (int i = 0; i < waitersIsWorkingNow.Count; i++)
+                    foreach (var w in waitersIsWorkingNow)
                     {
-                        waitersIsWorkingNow[i].IsWorkingNow = false;
+                        w.IsWorkingNow = false;
                     }
                 }
                 var tablesIsBooked = await dbContext.Tables.Where(t=>t.IsBooked==true).ToListAsync();
-                if (tablesIsBooked!=null)
+                if (tablesIsBooked.Count != 0)
                 {
-                    for (int i = 0; i < tablesIsBooked.Count; i++)
+                    foreach (var t in tablesIsBooked)
                     {
-                        tablesIsBooked[i].IsBooked = false;
+                        t.IsBooked = false;
                     }
                 }
                 await dbContext.SaveChangesAsync();
@@ -83,10 +88,11 @@ namespace Restaurant.Controllers
             using (var dbContext = new ApplicationDbContext())
             {
                 var order = dbContext.Orders.Include(o => o.Table).FirstOrDefault(o => o.Id == id);
+                if (order == null) return RedirectToAction("Index", "Manager", new {id = User.Identity.GetUserId()});
                 order.IsActive = false;
                 order.Table.IsBooked = false;
                 dbContext.SaveChanges();
-                return RedirectToAction("Index", "Manager", new { id = User.Identity.GetUserId() });
+                return RedirectToAction("Index", "Manager", new {id = User.Identity.GetUserId()});
             }
         }
 
@@ -171,9 +177,13 @@ namespace Restaurant.Controllers
             using (var dbContext = new ApplicationDbContext())
             {
                 var waiter = await dbContext.Waiters.Include(w => w.User).FirstOrDefaultAsync(w => w.Id == id);
-                waiter.IsWorkingNow = false;
-                await dbContext.SaveChangesAsync();
-                return RedirectToAction("WaitersList", "Manager", new { id = waiter.UserId });
+                if (waiter != null)
+                {
+                    waiter.IsWorkingNow = false;
+                    await dbContext.SaveChangesAsync();
+                    return RedirectToAction("WaitersList", "Manager", new {id = waiter.UserId});
+                }
+                return RedirectToAction("WaitersList", "Manager", new {id = User.Identity.GetUserId()});
             }
         }
 
@@ -193,16 +203,28 @@ namespace Restaurant.Controllers
             using (var dbContext = new ApplicationDbContext())
             {
                 var tables = await dbContext.Tables.ToListAsync();
-                if (filtertion.IsShow == 1)
+                switch (filtertion.IsShow)
                 {
-                    tables = tables.Where(t => t.IsShow == true).ToList();
-                    if (filtertion.IsBooked == 1)
-                        tables = tables.Where(t => t.IsBooked == true).ToList();
-                    if (filtertion.IsBooked == 0)
-                        tables = tables.Where(t => t.IsBooked == false).ToList();
-                }  
-                if (filtertion.IsShow == 0)
-                    tables = tables.Where(t => t.IsShow == false).ToList();
+                    case 1:
+                    {
+                        tables = tables.Where(t => t.IsShow == true).ToList();
+                        switch (filtertion.IsBooked)
+                        {
+                            case 1:
+                                tables = tables.Where(t => t.IsBooked == true).ToList();
+                                break;
+                            case 0:
+                                tables = tables.Where(t => t.IsBooked == false).ToList();
+                                break;
+                        }
+
+                        break;
+                    }
+                    case 0:
+                        tables = tables.Where(t => t.IsShow == false).ToList();
+                        break;
+                }
+
                 ViewBag.Tables = tables;
                 return View();
             }
@@ -234,7 +256,7 @@ namespace Restaurant.Controllers
             using (var dbContext = new ApplicationDbContext())
             {
                 var table = await dbContext.Tables.FindAsync(id);
-                table.IsShow = false;
+                if (table != null) table.IsShow = false;
                 await dbContext.SaveChangesAsync();
                 return RedirectToAction("TablesList", "Manager");
             }
@@ -261,11 +283,11 @@ namespace Restaurant.Controllers
                     return View(model);
                 }
                 var table = await dbContext.Tables.FindAsync(model.Id);
-                if (model.Name != table.Name)
+                if (table != null && model.Name != table.Name)
                     table.Name = model.Name;
-                if (model.MaxGuests != table.MaxGuests)
+                if (table != null && model.MaxGuests != table.MaxGuests)
                     table.MaxGuests = model.MaxGuests;
-                if (model.IsShow != table.IsShow)
+                if (table != null && model.IsShow != table.IsShow)
                     table.IsShow = model.IsShow;
                 await dbContext.SaveChangesAsync();
                 return RedirectToAction("TablesList", "Manager");
@@ -288,10 +310,16 @@ namespace Restaurant.Controllers
             using (var dbContext = new ApplicationDbContext())
             {
                 var dishes = await dbContext.Dishes.ToListAsync();
-                if (filtration.IsShow == 1)
-                    ViewBag.Dishs = dishes.Where(d => d.IsShow == true).ToList();
-                if (filtration.IsShow==0)
-                    ViewBag.Dishs = dishes.Where(d => d.IsShow == false).ToList();
+                switch (filtration.IsShow)
+                {
+                    case 1:
+                        ViewBag.Dishs = dishes.Where(d => d.IsShow == true).ToList();
+                        break;
+                    case 0:
+                        ViewBag.Dishs = dishes.Where(d => d.IsShow == false).ToList();
+                        break;
+                }
+
                 return View();
             }
         }
@@ -301,7 +329,7 @@ namespace Restaurant.Controllers
             using (var dbContext = new ApplicationDbContext())
             {
                 var dish = await dbContext.Dishes.FindAsync(id);
-                dish.IsShow = false;
+                if (dish != null) dish.IsShow = false;
                 await dbContext.SaveChangesAsync();
                 return RedirectToAction("DishsList", "Manager");
             }
@@ -331,7 +359,6 @@ namespace Restaurant.Controllers
         [HttpGet]
         public async Task<ActionResult> EditDish(int id)
         {
-
             using (var dbContext = new ApplicationDbContext())
             {
                 var dish = await dbContext.Dishes.FindAsync(id);
@@ -349,13 +376,13 @@ namespace Restaurant.Controllers
                     return View(model);
                 }
                 var dish = await dbContext.Dishes.FindAsync(model.Id);
-                if (model.Name != dish.Name)
+                if (dish != null && model.Name != dish.Name)
                     dish.Name = model.Name;
-                if (model.Price != dish.Price)
+                if (dish != null && model.Price != dish.Price)
                     dish.Price = model.Price;
-                if (model.IsShow != dish.IsShow)
+                if (dish != null && model.IsShow != dish.IsShow)
                     dish.IsShow = model.IsShow;
-                if (model.Description != dish.Description)
+                if (dish != null && model.Description != dish.Description)
                     dish.Description = model.Description;
                 await dbContext.SaveChangesAsync();
                 return RedirectToAction("DishsList", "Manager");
