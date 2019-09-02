@@ -1,0 +1,27 @@
+﻿@model Restaurant.Models.Dish
+@{ ViewBag.Title = "Добавить новое блюдо";}
+@using (Html.BeginForm())
+{
+    <h3>Новый стол</h3>
+    <div class="form-row">
+        <div class="form-group">
+            @Html.LabelFor(Model => Model.Name, "Введите название")
+            @Html.TextBoxFor(Model => Model.Name, new { @class = "form-control" })
+            @Html.ValidationMessageFor(Model => Model.Name, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(Model => Model.Price, "Введите цену")
+        @Html.TextBoxFor(Model => Model.Price, new { @class = "form-control" })
+        @Html.ValidationMessageFor(Model => Model.Price, "", new { @class = "text-danger" })
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(Model => Model.Description, "Введите описание")
+        @Html.TextAreaFor(Model => Model.Description, new { @class = "form-control" })
+        @Html.ValidationMessageFor(Model => Model.Description, "", new { @class = "text-danger" })
+    </div>
+
+    <div class="form-group">
+        <button class="btn btn-success mb-2" type="submit" name="addDish">Добавить</button>
+    </div>
+}

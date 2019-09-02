@@ -11,6 +11,7 @@ using Microsoft.AspNet.Identity;
 
 namespace Restaurant.Controllers
 {
+    [Authorize (Roles = "manager")]
     public class ManagerController : Controller
     {
         // GET: Manager
@@ -173,6 +174,191 @@ namespace Restaurant.Controllers
                 waiter.IsWorkingNow = false;
                 await dbContext.SaveChangesAsync();
                 return RedirectToAction("WaitersList", "Manager", new { id = waiter.UserId });
+            }
+        }
+
+        public async Task<ActionResult> TablesList()
+        {
+            using (var dbContext = new ApplicationDbContext())
+            {
+                //По умолчанию возвращает только не скрытые в меню
+                ViewBag.Tables = await dbContext.Tables.Where(t => t.IsShow == true).ToListAsync();
+                return View();
+            }
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> TablesList(TableFiltertioncs filtertion)
+        {
+            using (var dbContext = new ApplicationDbContext())
+            {
+                var tables = await dbContext.Tables.ToListAsync();
+                if (filtertion.IsShow == 1)
+                {
+                    tables = tables.Where(t => t.IsShow == true).ToList();
+                    if (filtertion.IsBooked == 1)
+                        tables = tables.Where(t => t.IsBooked == true).ToList();
+                    if (filtertion.IsBooked == 0)
+                        tables = tables.Where(t => t.IsBooked == false).ToList();
+                }  
+                if (filtertion.IsShow == 0)
+                    tables = tables.Where(t => t.IsShow == false).ToList();
+                ViewBag.Tables = tables;
+                return View();
+            }
+        }
+
+        public ActionResult AddTable()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> AddTable(Table table)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(table);
+            }
+            table.IsShow = true;
+            using (var dbContext = new ApplicationDbContext())
+            {
+                dbContext.Tables.Add(table);
+                await dbContext.SaveChangesAsync();
+                return RedirectToAction("TablesList", "Manager");
+            }
+        }
+
+        public async Task<ActionResult> HideFromOrders (int id)
+        {
+            using (var dbContext = new ApplicationDbContext())
+            {
+                var table = await dbContext.Tables.FindAsync(id);
+                table.IsShow = false;
+                await dbContext.SaveChangesAsync();
+                return RedirectToAction("TablesList", "Manager");
+            }
+        }
+
+        [HttpGet]
+        public async Task<ActionResult> EditTable (int id)
+        {
+
+            using (var dbContext = new ApplicationDbContext())
+            {
+                var table = await dbContext.Tables.FindAsync(id);
+                return View(table);
+            }
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> EditTable(Table model)
+        {
+            using (var dbContext = new ApplicationDbContext())
+            {
+                if (!ModelState.IsValid)
+                {
+                    return View(model);
+                }
+                var table = await dbContext.Tables.FindAsync(model.Id);
+                if (model.Name != table.Name)
+                    table.Name = model.Name;
+                if (model.MaxGuests != table.MaxGuests)
+                    table.MaxGuests = model.MaxGuests;
+                if (model.IsShow != table.IsShow)
+                    table.IsShow = model.IsShow;
+                await dbContext.SaveChangesAsync();
+                return RedirectToAction("TablesList", "Manager");
+            }
+        }
+
+        public async Task<ActionResult> DishsList()
+        {
+            using (var dbContext = new ApplicationDbContext())
+            {
+                //По умолчанию возвращает только не скрытые в меню
+                ViewBag.Dishs = await dbContext.Dishes.Where(t => t.IsShow == true).ToListAsync();
+                return View();
+            }
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> DishsList(DishFiltration filtration)
+        {
+            using (var dbContext = new ApplicationDbContext())
+            {
+                var dishes = await dbContext.Dishes.ToListAsync();
+                if (filtration.IsShow == 1)
+                    ViewBag.Dishs = dishes.Where(d => d.IsShow == true).ToList();
+                if (filtration.IsShow==0)
+                    ViewBag.Dishs = dishes.Where(d => d.IsShow == false).ToList();
+                return View();
+            }
+        }
+
+        public async Task<ActionResult> HideFromOrdersDish (int id)
+        {
+            using (var dbContext = new ApplicationDbContext())
+            {
+                var dish = await dbContext.Dishes.FindAsync(id);
+                dish.IsShow = false;
+                await dbContext.SaveChangesAsync();
+                return RedirectToAction("DishsList", "Manager");
+            }
+        }
+
+        public ActionResult AddDish()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> AddDish(Dish dish)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(dish);
+            }
+            dish.IsShow = true;
+            using (var dbContext = new ApplicationDbContext())
+            {
+                dbContext.Dishes.Add(dish);
+                await dbContext.SaveChangesAsync();
+                return RedirectToAction("DishsList", "Manager");
+            }
+        }
+
+        [HttpGet]
+        public async Task<ActionResult> EditDish(int id)
+        {
+
+            using (var dbContext = new ApplicationDbContext())
+            {
+                var dish = await dbContext.Dishes.FindAsync(id);
+                return View(dish);
+            }
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> EditDish(Dish model)
+        {
+            using (var dbContext = new ApplicationDbContext())
+            {
+                if (!ModelState.IsValid)
+                {
+                    return View(model);
+                }
+                var dish = await dbContext.Dishes.FindAsync(model.Id);
+                if (model.Name != dish.Name)
+                    dish.Name = model.Name;
+                if (model.Price != dish.Price)
+                    dish.Price = model.Price;
+                if (model.IsShow != dish.IsShow)
+                    dish.IsShow = model.IsShow;
+                if (model.Description != dish.Description)
+                    dish.Description = model.Description;
+                await dbContext.SaveChangesAsync();
+                return RedirectToAction("DishsList", "Manager");
             }
         }
     }

@@ -1,0 +1,76 @@
+﻿@model Restaurant.Models.DishFiltration
+@{
+    ViewBag.Title = "Блюда";
+}
+<div class="row">
+    <h2>Блюда</h2>
+</div>
+<div class="row">
+    <h3>Фильтрация блюд</h3>
+</div>
+<div class="row">
+    @{
+        var IsShowList = new SelectList(
+            new List<SelectListItem>
+            {
+                new SelectListItem {Text = "Доступны в меню заказа", Value = "1"},
+                new SelectListItem {Text = "Скрыты в меню заказа", Value = "0"},
+                new SelectListItem {Text = "Все", Value = "2", Selected = true}
+                                                }, "Value", "Text");
+        using (Html.BeginForm())
+        {
+            <div class="form-row">
+                <div class="col">
+                    <div class="form-group">
+                        @Html.LabelFor(Model => Model.IsShow, "Выберите, скрыто блюдо или нет?")
+                        @Html.DropDownListFor(Model => Model.IsShow, (IEnumerable<SelectListItem>)IsShowList, new { @class = "form-control", @id = "IsActive" })
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <div class="form-row">
+                        <button class="btn btn-success mb-2" type="submit" name="filter">Отфильтровать</button>
+                    </div>
+                </div>
+            </div>
+        }
+    }
+</div>
+<div class="row">
+    @Html.ActionLink("Добавить новый", "AddDish", "Manager", htmlAttributes: new { @class = "btn btn-primary" })
+</div>
+@{
+    if (ViewBag.Dishs != null)
+    {
+        <div class="row">
+            <h4>Всего: @ViewBag.Dishs.Count</h4>
+        </div>
+        <div class="row justify-content-start">
+            @foreach (var dish in ViewBag.Dishs)
+            {
+                <div class="card m-2" id="@dish.Id" style="width: 20rem;">
+                    <dvi class="card-header">
+                        <p>@dish.Name</p>
+                    </dvi>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">Описание: @dish.Description</li>
+                        <li class="list-group-item">Цена: @dish.Price руб.</li>
+                    </ul>
+                    <div class="card-footer btns">
+                        <div class="row">
+                            @if (dish.IsShow == true)
+                            {
+                                <div class="col">
+                                    @Html.ActionLink("Скрыть для заказов", "HideFromOrdersDish", "Manager", routeValues: new { id = dish.Id }, htmlAttributes: new { @class = "btn btn-danger" })
+                                </div>
+                            }
+                            @Html.ActionLink("Изменить", "EditDish", "Manager", routeValues: new { id = dish.Id }, htmlAttributes: new { @class = "btn btn-primary" })
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+}
+
