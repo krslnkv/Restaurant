@@ -18,7 +18,7 @@
                         <div class="card-header" id="@heading">
                             <h5 class="mb-0">
                                 @{
-                                    var orderinfo = $"#заказа:{order.Id} время заказа:{order.OrderTime.TimeOfDay} #стола {order.TableId} название стола {order.Table.Name} сумма {order.FinalPrice}";
+                                    var orderinfo = $"#заказа:{order.Id}; дата заказа: {order.OrderTime.ToShortDateString()}; время заказа: {order.OrderTime.ToShortTimeString()} #стола {order.TableId} название стола {order.Table.Name} сумма {order.FinalPrice}";
                                 }
                                 <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#@{@collapse}" aria-expanded="true" aria-controls="collapseOne">
                                     @orderinfo

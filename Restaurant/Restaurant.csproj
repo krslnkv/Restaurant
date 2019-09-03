@@ -305,6 +305,10 @@
     <Compile Include="Migrations\201909022122068_AddIsShowColumnForDishsTable.Designer.cs">
       <DependentUpon>201909022122068_AddIsShowColumnForDishsTable.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201909031005134_RemoveGuestsTable.cs" />
+    <Compile Include="Migrations\201909031005134_RemoveGuestsTable.Designer.cs">
+      <DependentUpon>201909031005134_RemoveGuestsTable.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Dish.cs" />
@@ -543,6 +547,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201909022122068_AddIsShowColumnForDishsTable.resx">
       <DependentUpon>201909022122068_AddIsShowColumnForDishsTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201909031005134_RemoveGuestsTable.resx">
+      <DependentUpon>201909031005134_RemoveGuestsTable.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

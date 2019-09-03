@@ -71,7 +71,11 @@
                     </ul>
                     <div class="card-footer btns">
                         <div class="row">
-                            @Html.ActionLink("Закончить смену", "RemoveWaiterFromShift", "Manager", routeValues: new {id = waiter.Id }, htmlAttributes: new { @class = "btn btn-danger"})
+                            @if (waiter.IsWorkingNow == true)
+                            {
+                            @Html.ActionLink("Закончить смену", "RemoveWaiterFromShift", "Manager", routeValues: new { id = waiter.Id }, htmlAttributes: new { @class = "btn btn-danger" })
+
+                            }
                         </div>
                     </div>
                 </div>

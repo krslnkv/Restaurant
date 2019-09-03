@@ -24,16 +24,21 @@
                     if (@User.IsInRole("manager"))
                     {
                         <li class="nav-item active">
-                            @Html.ActionLink("Список блюд", "DishsList", "Manager", htmlAttributes: new { @class = "nav-link" }, routeValues: new { id = User.Identity.GetUserId() })
+                            @*Генреаиця ссылок пересылает на не верные страницы, поэтому указал явно
+                            @Html.ActionLink("Список блюд", "DishsList", "Manager", htmlAttributes: new { @class = "nav-link" })*@
+                            <a href="/Manager/DishsList/" class="nav-link">Список блюд</a>
                         </li>
                         <li class="nav-item active">
-                            @Html.ActionLink("Список официантов", "WaitersList", "Manager", htmlAttributes: new { @class = "nav-link" }, routeValues: new { id = User.Identity.GetUserId() })
+                            @*@Html.ActionLink("Список официантов", "WaitersList", "Manager", htmlAttributes: new { @class = "nav-link" })*@
+                            <a href="/Manager/WaitersList/" class="nav-link">Список официантов</a>
                         </li>
                         <li class="nav-item active">
-                            @Html.ActionLink("Список столов", "TablesList", "Manager", htmlAttributes: new { @class = "nav-link" }, routeValues: new { id = User.Identity.GetUserId() })
+                            @*@Html.ActionLink("Список столов", "TablesList", "Manager", htmlAttributes: new { @class = "nav-link" })*@
+                            <a href="/Manager/TablesList/" class="nav-link">Список столов</a>
                         </li>
                         <li class="nav-item active">
-                            @Html.ActionLink("Список заказов", "OrdersList", "Manager", htmlAttributes: new { @class = "nav-link" }, routeValues: new { id = User.Identity.GetUserId() })
+                            @*@Html.ActionLink("Список заказов", "OrdersList", "Manager", htmlAttributes: new { @class = "nav-link" })*@
+                            <a href="/Manager/OrdersList/" class="nav-link">Список заказов</a>
                         </li>
                         <li class="nav-item active">
                             @Html.ActionLink("Менеджер", "Index", "Manager", htmlAttributes: new { @class = "nav-link" }, routeValues: new { id = User.Identity.GetUserId() })

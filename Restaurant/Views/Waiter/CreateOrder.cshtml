@@ -21,6 +21,18 @@
     </div>
 }
 <div class="container" id="dishsPanel">
+    <div class="row">
+        <p class="h4">Общее количество блюд:</p>
+        <p class="h4" id="allCount">0</p>
+    </div>
+    <div class="row">
+        <p class="h4">Общая сумма:</p>
+        <p class="h4" id="allPrice">0</p>
+    </div>
+    <div class="row">
+        <input hidden id="shift" value="@ViewBag.Shift.Id" />
+        <button class="btn btn-primary" id="createOrder">Создать заказ</button>
+    </div>
     <div class="row justify-content-start">
         @foreach (var dish in ViewBag.Dishes)
         {
@@ -41,18 +53,6 @@
                 </div>
             </div>
         }
-    </div>
-    <div class="row">
-        <p class="h4">Общее количество блюд:</p>
-        <p class="h4" id="allCount">0</p>
-    </div>
-    <div class="row">
-        <p class="h4">Общая сумма:</p>
-        <p class="h4" id="allPrice">0</p>
-    </div>
-    <div class="row">
-        <input hidden id="shift" value="@ViewBag.Shift.Id" />
-        <button class="btn btn-primary" id="createOrder">Создать заказ</button>
     </div>
 </div>
 @Scripts.Render("~/bundles/jquery")
